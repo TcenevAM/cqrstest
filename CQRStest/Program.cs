@@ -1,4 +1,5 @@
 using CQRStest.Data.Repositories;
+using CQRStest.Data.Repositories.interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,9 @@ var services = builder.Services;
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-var q = builder.Configuration.GetConnectionString("PostgresConnectionString");
+services.AddTransient<IAuthorRepository, AuthorRepository>();
+services.AddTransient<IBookRepository, BookRepository>();
+services.AddTransient<ILibraryRepository, LibraryRepository>();
 services.AddDbContext<Context>(opts =>
     opts.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
